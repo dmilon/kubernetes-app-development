@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hostname-service
+spec:
+  selector:
+    # Equivalent to "select any pod where the
+    # label app = hostname"
+    app: hostname
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 80

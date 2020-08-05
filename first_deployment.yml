@@ -1,0 +1,30 @@
+# Deployment 1: three replicas of v1.0.1 of the app
+# Deployment 2: one replica of v1.0.2 of the app
+# Service: any pod with the label `app: hostname`
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: hostname-101-deployment
+spec:
+  replicas: 3
+  selector:
+    # Like saying "Make sure there are three pods running
+    # with the label app = hostname and version = v101"
+    matchLabels:
+      app: hostname
+      version: v101
+  template:
+    metadata:
+      labels:
+        # The `app` label is used by both the service
+        # and the deployment to select the pods they operate on.
+        app: hostname
+        # The `version` label is used only by the deployment
+        # to control replication.
+        version: v101
+    spec:
+      containers:
+        - name: nginx-hostname
+          image: kubegoldenguide/nginx-hostname:1.0.1
+          ports:
+          - containerPort: 80
